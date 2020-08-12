@@ -6,15 +6,11 @@ public class FollowPlayer : MonoBehaviour
 {
 
     public GameObject player;
-    private Vector3 _offset = new Vector3(0, 5, -5);
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Vector3 _offset = new Vector3(0, 5, -7);
+  
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         //Offset the camera behind the player by adding to the players position
         transform.position = player.transform.position + _offset;

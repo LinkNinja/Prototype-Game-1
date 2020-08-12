@@ -1,31 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject turret;
     public GameObject projectile;
     //private variables
-    public float _tankSpeed = 5.0f;
-    public float _turnSpeed = 15.0f;
-    public float _horizontalInput;
-    public float _forwardInput;
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] float _tankSpeed;
+    [SerializeField] private float horsePower = 0;
+    private float _turnSpeed = 45.0f;
+    private float _horizontalInput;
+    private float _forwardInput;
+    private Rigidbody playerRb;
+    [SerializeField] GameObject centerOfMass;
+    [SerializeField] TextMeshProUGUI speedometerText;
+    [SerializeField] TextMeshProUGUI rpmText;
+    [SerializeField] float rpm;
+    [SerializeField] List<WheelCollider> allWheels;
+    [SerializeField] int wheelsOnGround;
+
+    private void Start()
     {
-        
+        //Our playerRb variable is set to the rigid body component that is on the vehicle when the game starts
+        playerRb = GetComponent<Rigidbody>();
+        playerRb.centerOfMass = centerOfMass.transform.position;
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        //This is where we get player input.
-        _horizontalInput = Input.GetAxis("Horizontal");
-        //Using the input manager from unity to create an assign a variable
-        _forwardInput = Input.GetAxis("Vertical");
-        
-
         //Here we are getting the transform component of our object. This would be the vehicles transform.
         // We'll move the vehicle forward.
         //Using (x, y, z,)
@@ -36,10 +43,26 @@ public class PlayerController : MonoBehaviour
         //Important due to the fact that some players machines cannot run 60fps 30fps etc.
 
         //We move vehicle Forward
-        transform.Translate(Vector3.forward * Time.deltaTime * _tankSpeed * _forwardInput);
+        //transform.Translate(Vector3.forward * Time.deltaTime * _tankSpeed * _forwardInput);
         // We turn the vehicle
-        transform.Rotate(Vector3.up,  Time.deltaTime * _turnSpeed * _horizontalInput);
 
+        //This is where we get player input.
+        _horizontalInput = Input.GetAxis("Horizontal");
+        //Using the input manager from unity to create an assign a variable
+        _forwardInput = Input.GetAxis("Vertical");
+
+        if (isOnGround())
+        {
+
+            playerRb.AddRelativeForce(Vector3.forward * horsePower * _forwardInput);
+            transform.Rotate(Vector3.up, Time.deltaTime * _turnSpeed * _horizontalInput);
+            _tankSpeed = Mathf.RoundToInt(playerRb.velocity.magnitude * 2.237f); // for KPH change 2.237 to 3.6
+
+            speedometerText.SetText("Speed: " + _tankSpeed + "mph");
+            rpm = Mathf.Round((_tankSpeed % 30) * 40);
+            rpmText.SetText("RPM: " + rpm);
+        }
+        
         //Rotate the turret Right
         if (Input.GetKey(KeyCode.E))
         {
@@ -57,14 +80,14 @@ public class PlayerController : MonoBehaviour
         //Speed tank up with Page Up
         if(Input.GetKey(KeyCode.T))
         {
-            _tankSpeed += Time.deltaTime * 1;
+            //_tankSpeed += Time.deltaTime * 1;
         }
 
         // Slow down tank with page down
         if(Input.GetKey(KeyCode.R))
         
         {
-            _tankSpeed -= Time.deltaTime * 1;
+            //_tankSpeed -= Time.deltaTime * 1;
         }
 
 
@@ -82,4 +105,26 @@ public class PlayerController : MonoBehaviour
 
 
     }
+
+    bool isOnGround()
+    {
+        wheelsOnGround = 0;
+        foreach(WheelCollider wheel in allWheels)
+        {
+            if(wheel.isGrounded)
+            {
+                wheelsOnGround++;
+            }
+        }
+        if(wheelsOnGround == 4)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 }
