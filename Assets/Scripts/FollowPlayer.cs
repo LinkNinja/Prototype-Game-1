@@ -16,7 +16,7 @@ public class FollowPlayer : MonoBehaviour
         transform.position = player.transform.position + _offset;
 
         //Here you can change camera view of your vehicle or player.. REMEMBER THIS SCRIPT
-        /*
+        
         if(Input.GetKeyDown(KeyCode.Space))
         {
             _offset = new Vector3(0, 5, -10);
@@ -27,6 +27,6 @@ public class FollowPlayer : MonoBehaviour
         {
             _offset = new Vector3(0, 5, -15);
         }
-        */
+        
     }
 }

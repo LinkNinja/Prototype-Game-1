@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
             //_tankSpeed += Time.deltaTime * 1;
         }
 
-        // Slow down tank with page down
+        // Slow down tank with page downr
         if(Input.GetKey(KeyCode.R))
         
         {
