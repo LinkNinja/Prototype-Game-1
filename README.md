@@ -11,3 +11,13 @@ Things I Learned.
 7.	How to use Player controller to get input from user.
 8.	Wrote a script for the camera that.
 9.	Created a point for the camera to start when the player presses start. This scrip also contains a button that allows the user to change camera angle. However, it doesn’t change back.
+
+Things I want to Add
+1.	Engine sound that plays when the player accelerates the vehicle.
+2.	Engine sound stops when the player stops.
+3.	Particle effects on the wheels that throw up dirt or some effect.
+4.	Smoke or particle effect from the exhaust that starts to play when the vehicle engine starts.
+5.	Play a sound when the vehicle collides with an obstacle. 
+6.	Play sound to indicate when the camera has changed.
+7.	Create a pause menu that allows the player to restart the game when the car flips over.
+8.	To be cont….
